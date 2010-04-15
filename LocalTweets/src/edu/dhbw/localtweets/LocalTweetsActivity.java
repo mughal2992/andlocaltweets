@@ -19,13 +19,9 @@ package edu.dhbw.localtweets;
 
 import java.util.List;
 
-import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
-import com.google.android.maps.OverlayItem;
-
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
