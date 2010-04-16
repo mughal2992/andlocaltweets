@@ -19,9 +19,13 @@ package edu.dhbw.localtweets;
 
 import java.util.List;
 
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
+import com.google.android.maps.OverlayItem;
+
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -34,6 +38,10 @@ import android.os.Bundle;
 public class LocalTweetsActivity extends MapActivity {
     public LocalTweetsActivity() {
     }
+    
+    private TwitterOverlay itemizedoverlay;
+    private TwitterUpdater updater = null;
+    private MapView mapView;
 
     /**
      * Called with the activity is first created.
@@ -42,14 +50,24 @@ public class LocalTweetsActivity extends MapActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        MapView mapView = (MapView) findViewById(R.id.mapview);
+        mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         List<Overlay> mapOverlays = mapView.getOverlays();
         Drawable drawable = this.getResources().getDrawable(R.drawable.android);
-        TwitterOverlay itemizedoverlay = new TwitterOverlay(drawable, this);
+        itemizedoverlay = new TwitterOverlay(drawable, this);
         mapOverlays.add(itemizedoverlay);
-        new TwitterUpdater(mapView, itemizedoverlay).start();
     }
+    
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	//creating this thread in oncreate will cause getlat/longspan to return zero
+    	if(updater == null && mapView != null && itemizedoverlay != null) { 
+    		updater = new TwitterUpdater(mapView, itemizedoverlay);
+    		updater.start();
+    	}
+    }
+    
 
 	@Override
 	protected boolean isRouteDisplayed() {

@@ -810,8 +810,7 @@ public class JSONArray {
      * @return a printable, displayable, transmittable
      *  representation of the array.
      */
-    @Override
-	public String toString() {
+    public String toString() {
         try {
             return '[' + join(",") + ']';
         } catch (Exception e) {
